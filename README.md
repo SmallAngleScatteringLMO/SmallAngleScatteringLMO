@@ -1,16 +1,20 @@
-### Hi there 👋
+### Small angle scattering model for LMO
 
-<!--
-**SmallAngleScatteringLMO/SmallAngleScatteringLMO** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+The purpose of this github repository is to make available the Boltzmann model code for the publication "Emergent symmetry in a low dimensional superconductor
+on the edge of Mottness" by P. Chudzinski, M. Berben _et al._ in the spirit of open science. This repository consists of the following parts:
 
-Here are some ideas to get you started:
+- Relaxation time model H//c no c-axis warping
+- Relaxation time model H//c with c-axis warping
+- Small angle scatteing model H//c no c-axis warping
+- Documentation on the mathematics and use of the model
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+For any inquiries, please see the README file for contact details.
+Please make yourself familiar with the LICENSE file.
+
+### Adopting this code
+
+The code here presented can be readily adopted to calculate the MR in any quasi-1D system.
+Please read the documentation, but be assured that changing tight binding coefficients
+is trivial and changing the dispersion away from a simple tight binding requires minimal changes.
+
+
