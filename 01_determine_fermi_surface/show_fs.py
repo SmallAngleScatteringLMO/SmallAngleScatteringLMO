@@ -1,6 +1,12 @@
 # This code is used to estimate tight binding
 # coefficients that reproduce the Fermi surface
 # of Merino2012 and Nuss2014
+#
+# -----------------------
+# Part of the SmallAngleScatteringLMO repository
+# Subject to the LICENSE terms and conditions
+# Written by Roemer Hinlopen, 2022
+
 
 import numpy as np
 import matplotlib.pyplot as plt
