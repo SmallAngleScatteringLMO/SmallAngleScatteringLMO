@@ -1,0 +1,8 @@
+# X and Y normalised to the half-BZ as shown in the figure
+# Splitting between datapoints 1-2 is at BZ edge,
+# between 3-4 at Gamma. Expressed in units of pi/b.
+
+-2.7755575615628914e-17, 0.4278512917454319
+-2.7755575615628914e-17, 0.5223692501575302
+0.9924623115577889, 0.48897290485192213
+0.9924623115577889, 0.48582230623818545
