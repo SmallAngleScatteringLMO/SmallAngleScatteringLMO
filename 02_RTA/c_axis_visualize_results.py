@@ -5,7 +5,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-merino = False
+print('Choose which Fermi surface to use')
+choice = '0'
+choice = input('Enter "1" for Merino, "2" for Nuss: ')
+while choice not in ['1', '2']:
+    print('Illegal entry.')
+    choice = input('Enter "1" for Merino, "2" for Nuss: ')
+merino = choice == '1'
+
+
+###########################
+# User Input
+# Definitions
+###########################
 
 # Lattice parameters, see e.g. Popovic2006
 A = 9.499e-10
@@ -16,11 +28,12 @@ KB = 1.380649e-23
 HBAR = 1.054571817e-34
 
 ###########################
+# Definitions
 # Import
 ###########################
 
 name = 'merino' if merino else 'nuss'
-path = os.path.abspath(os.path.join('output', f'c-axis_{name}.dat'))
+path = os.path.abspath(os.path.join('output c-axis', f'c-axis_{name}.dat'))
 saa, sbb, sab = [], [], []
 with open(path) as f:
     for line in f:
@@ -52,6 +65,7 @@ Sab = np.array(Sab)
 
 rbb = Saa / (Sbb * Saa + Sab**2)
 raa = Sbb / (Saa * Sbb + Sab**2)
+rab = Sab / (Saa * Sbb + Sab**2)
 print(f'\u03C1_b = {rbb[0]:.3f}')
 print(f'\u03C1_a/\u03C1_b={raa[0] / rbb[0]:.3f}')
 index = np.argmin(np.abs(BB - 100))
@@ -74,25 +88,44 @@ else:
 
 with open(path) as f:
     for line in f:
-        if ' 0.000' in line[:20]:
-            line_0T = line
-        if '100.000' in line[:20]:
-            line_100T = line
+        if line.startswith('B '):
+            break
 
-_, saa, sbb, sab = [float(num) for num in line_0T.split()]
-rbb0 = saa / (saa * sbb + sab**2)
-raa0 = sbb / (saa * sbb + sab**2)
-_, saa, sbb, sab = [float(num) for num in line_100T.split()]
-rbb100 = saa / (saa * sbb + sab**2)
-raa100 = sbb / (saa * sbb + sab**2)
+    BBr = []
+    saar = []
+    sbbr = []
+    sabr = []
+    for line in f:
+        nums = [float(x) for x in line.split()]
+        BBr.append(nums[0])
+        saar.append(nums[1])
+        sbbr.append(nums[2])
+        sabr.append(nums[3])
+BBr = np.array(BBr)
+wh = BBr < 200
+BBr = BBr[wh]
+saar = np.array(saar)[wh]
+sbbr = np.array(sbbr)[wh]
+sabr = np.array(sabr)[wh]
+raar = sbbr / (saar * sbbr + sabr**2)
+rbbr = saar / (saar * sbbr + sabr**2)
+rabr = sabr / (saar * sbbr + sabr**2)
+
+i0 = np.argmin(BB)
+if abs(BBr[i0]) > 1e-10:
+    raise ValueError('No 0 T data in the RTA results')
+i1 = np.argmin(np.abs(BB - 100))
+if abs(BBr[i0]) > 1e-10:
+    raise ValueError('No 100 T data in the RTA results')
 
 print()
 print('Compare with RTA no c-axis warping:')
-print(f'\u03C1_b = {rbb0:.3f}')
-print(f'\u03C1_a\u03C1_b = {raa0 / rbb0:.3f}')
-print(f'\u0394\u03C1_a/\u03C1_a = {(raa100 - raa0) / raa0:.2e}  (1 T)')
-print(f'\u0394\u03C1_b/\u03C1_b = {(rbb100 - rbb0) / rbb0:.2e}  (1 T)')
-print(f' > ratio is {(raa100 - raa0) * rbb0 / (rbb100 - rbb0) / raa0:.0f}')
+print(f'\u03C1_b({BBr[i0]:.0e}) = {rbbr[i0]:.3f}')
+print(f'\u03C1_a\u03C1_b = {raar[i0] / rbbr[i0]:.3f}')
+print(f'\u0394\u03C1_a/\u03C1_a = {(raar[i1] - raar[i0]) / raar[i0]:.2e}  (100 T)')
+print(f'\u0394\u03C1_b/\u03C1_b = {(rbbr[i1] - rbbr[i0]) / rbbr[i0]:.2e}  (100 T)')
+ani_rta = (raar[i1] - raar[i0]) * rbbr[i0] / (rbbr[i1] - rbbr[i0]) / raar[i0]
+print(f' > MR ratio is {ani_rta:.0f}')
 
 
 ###########################
@@ -103,7 +136,9 @@ print(f' > ratio is {(raa100 - raa0) * rbb0 / (rbb100 - rbb0) / raa0:.0f}')
 plt.rc('font', size=25)
 lw = 5
 plt.figure('Rbb')
-plt.plot(BB, rbb / rbb[0] - 1, lw=lw)
+plt.plot(BBr, rbbr / rbbr[0] - 1, lw=lw, label='RTA no c-axis')
+plt.plot(BB, rbb / rbb[0] - 1, lw=lw, label='RTA c-axis')
+plt.legend()
 plt.xlabel('$B$ (T)')
 plt.ylabel('$\u0394\u03C1_{bb}/\u03C1_0$')
 plt.title(f'$\u03C1_b$ = {rbb[0]:.1f} \u03BC\u03A9cm')
@@ -111,7 +146,9 @@ plt.xlim(left=0)
 plt.ylim(bottom=0)
 
 plt.figure('Raa')
-plt.plot(BB, raa / raa[0] - 1, lw=lw)
+plt.plot(BBr, raar / raar[0] - 1, lw=lw, label='RTA no c-axis')
+plt.plot(BB, raa / raa[0] - 1, lw=lw, label='RTA c-axis')
+plt.legend()
 plt.xlabel('$B$ (T)')
 plt.ylabel('$\u0394\u03C1_{aa}/\u03C1_0$')
 plt.title(f'$\u03C1_a$ = {raa[0]:.0f} \u03BC\u03A9cm')
@@ -119,7 +156,9 @@ plt.xlim(left=0)
 plt.ylim(bottom=0)
 
 plt.figure('RH')
-plt.plot(BB, np.abs(Sab) / (Sab**2 + Saa * Sbb), lw=lw)
+plt.plot(BBr, np.abs(rabr), lw=lw, label='RTA no c-axis')
+plt.plot(BB, np.abs(rab), lw=lw, label='RTA c-axis')
+plt.legend()
 plt.xlabel('$B$ (T)')
 plt.ylabel('$|\u03C1_{ab}|$ \u03BC\u03A9cm')
 plt.xlim(left=0)
