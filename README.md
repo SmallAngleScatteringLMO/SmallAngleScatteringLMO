@@ -4,16 +4,14 @@ The purpose of this github repository is to make available the Boltzmann model c
 on the edge of Mottness" by P. Chudzinski, M. Berben _et al._ in the spirit of open science. This repository consists of the following parts:
 
 - Relaxation time model H//c no c-axis warping
->> This code is used to generate the RTA results in the paper's figure
 - Relaxation time model H//c with c-axis warping
->> This code is used to quantify neglecting c-axis warping
 - Small angle scatteing model H//c no c-axis warping
->> This code is used to generate all small-angle scattering results
 - Documentation on the mathematics and use of the model
->> This includes the analytical proof that isotropic-L gives rise to 0 MR.
 
 For any inquiries, please see the README file for contact details.
 Please make yourself familiar with the LICENSE file.
+
+Please note that we do our best to have all code and documentation available by 21/10/2022.  
 
 ### Adopting this code
 
