@@ -166,7 +166,7 @@ plt.title('$\u03C1_{aa,0}$ = 'f'{raa[0]:.0f} \u03BC\u03A9cm')
 plt.legend()
 
 plt.figure('Rab')
-plt.plot(fields, rab)
+plt.plot(fields, rab, lw=lw)
 plt.xlabel('$B$ (T)')
 plt.ylabel('$\u03C1_{ab}$')
 plt.xlim(left=0)

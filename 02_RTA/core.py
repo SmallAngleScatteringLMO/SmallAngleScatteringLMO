@@ -370,16 +370,20 @@ def compute_Bsweep(fields, structE, tau):
     dtfrac = 101
     ntau = 30
     n_ka = 51
-    st = time.time()
+
+    # This first one may compile and take much longer than normal.
     sbb0 = compute_sigma(True, fields[0], structE, tau, n_ka=n_ka,
+                         dtfrac=dtfrac, ntau=ntau)
+    st = time.time()
+    saa0 = compute_sigma(False, fields[0], structE, tau, n_ka=n_ka,
                          dtfrac=dtfrac, ntau=ntau)
     print(f'> Expect {(3 * len(fields) + 10) * (time.time() - st):.0f} s compute time')
 
     err = analyse_errors(max(fields), structE, tau, ntau, n_ka, dtfrac)
     sbb = [sbb0] + [compute_sigma(True, f, structE, tau, n_ka=n_ka,
                                   dtfrac=dtfrac, ntau=ntau) for f in fields[1:]]
-    saa = [compute_sigma(False, f, structE, tau, n_ka=n_ka,
-                         dtfrac=dtfrac, ntau=ntau) for f in fields]
+    saa = [saa0] + [compute_sigma(False, f, structE, tau, n_ka=n_ka,
+                         dtfrac=dtfrac, ntau=ntau) for f in fields[1:]]
     sab = [compute_sigma(2, f, structE, tau, n_ka=n_ka,
                          dtfrac=dtfrac, ntau=ntau) for f in fields]
 
