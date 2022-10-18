@@ -13,6 +13,14 @@ while choice not in ['1', '2']:
     choice = input('Enter "1" for Merino, "2" for Nuss: ')
 merino = choice == '1'
 
+print()
+print('Choose whether to look for low-field or all-field')
+choice = '0'
+choice = input('Enter "1" for realistic field, "2" for all-field: ')
+while choice not in ['1', '2']:
+    print('Illegal entry.')
+    choice = input('Enter "1" for Merino, "2" for Nuss: ')
+maxB = 1e99 if choice == '2' else 200
 
 ###########################
 # User Input
@@ -102,7 +110,7 @@ with open(path) as f:
         sbbr.append(nums[2])
         sabr.append(nums[3])
 BBr = np.array(BBr)
-wh = BBr < 200
+wh = BBr < maxB
 BBr = BBr[wh]
 saar = np.array(saar)[wh]
 sbbr = np.array(sbbr)[wh]

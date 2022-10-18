@@ -66,6 +66,13 @@ elif choice == '3':
     fname = 'special_fs.dat'
     print('Starting calcuation for special high-anisotropy Fermi surface')
 
+dtfrac = 101
+print(f'dt=tau/{dtfrac} [change in the code]')
+ntau = 30
+print(f'Time integral cut off at {ntau}*tau [change in the code]')
+n_ka = 31
+print(f'Using {n_ka} ka points [change in the code]')
+
 #############################
 # Fermi surface
 # Calculate
@@ -90,8 +97,8 @@ print(f'Densities are {2 * n1:.2f} + {2 * n2:.2f} = '
 fields = list(np.linspace(0, 10, 40)) + list(np.linspace(11, 100, 25))
 fields += list(np.linspace(150, 1500, 11)) + list(np.linspace(2000, 10000, 9))
 fields = np.array(fields)
-sbb, saa, sab, err = core.compute_Bsweep(fields, structE, tau)
-sbb2, saa2, sab2, err2 = core.compute_Bsweep(fields, conj, tau)
+sbb, saa, sab, err = core.compute_Bsweep(fields, structE, tau, dtfrac=dtfrac, ntau=ntau, n_ka=n_ka)
+sbb2, saa2, sab2, err2 = core.compute_Bsweep(fields, conj, tau, dtfrac=dtfrac, ntau=ntau, n_ka=n_ka)
 sbb += sbb2
 saa += saa2
 sab += sab2

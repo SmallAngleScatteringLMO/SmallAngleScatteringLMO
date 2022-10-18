@@ -356,20 +356,11 @@ def analyse_errors(max_field, structE, tau, ntau, n_ka, dtfrac):
     return err
 
 
-def compute_Bsweep(fields, structE, tau):
+def compute_Bsweep(fields, structE, tau, *, dtfrac=101, ntau=30, n_ka=31):
     """ Get sigma_bb and sigma_aa for this field *sweep*. muOhmcm.
 
     Chooses convergence criteria and performes error analysis for you
     """
-
-    # 101 is very high.
-    # The reason it is, is because the Nuss fs in particular
-    # has an incredibly small MR.
-    #
-    # Please maintain odd/even if you change this or errors will result.
-    dtfrac = 101
-    ntau = 30
-    n_ka = 51
 
     # This first one may compile and take much longer than normal.
     sbb0 = compute_sigma(True, fields[0], structE, tau, n_ka=n_ka,
