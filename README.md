@@ -22,3 +22,4 @@ The same holds for the type of backscattering interaction, there are 5 implement
 give you inspiration.
 Please note that in line with the LICENSE file, no guarantees are given.
 
+This code was written by Roemer Hinlopen at the HH Wills Physics Laboratory, University of Bristol, UK
